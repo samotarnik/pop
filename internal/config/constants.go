@@ -12,10 +12,11 @@ const (
 	PlayerHeight      = 64
 	PlayerDuckHeight  = 36
 	PlayerRunSpeed    = 180.0
-	PlayerJumpSpeed   = -430.0
-	Gravity           = 980.0
-	AttackDurationSec = 0.16
-	HitIFramesSec     = 0.6
+	PlayerJumpSpeed   = -460.0
+	Gravity           = 1020.0
+	AttackDurationSec = 0.14
+	HitIFramesSec     = 0.50
+	JumpCutGravityMul = 1.55
 )
 
 const (
@@ -34,9 +35,13 @@ const (
 
 	FarmerAttackCooldownSec = 1.05
 	BossAttackCooldownSec   = 0.58
+	BossCooldownStepSec     = 0.08
+	BossMinCooldownSec      = 0.34
 
 	FarmerAttackReach = 38.0
 	BossAttackReach   = 52.0
+	BossReachStep     = 3.0
+	BossMoveStep      = 10.0
 
 	EnemyNearSlowdownFactor = 0.58
 	EnemyNearSlowdownRadius = 1.7

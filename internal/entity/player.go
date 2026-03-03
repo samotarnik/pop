@@ -99,6 +99,10 @@ func (p *Player) Update(dt float64, in Input, groundY float64) {
 
 	if !p.OnGround {
 		p.vy += config.Gravity * dt
+		// Jump cut adds extra gravity when the jump key is released early, allowing shorter hops.
+		if p.vy < 0 && !in.JumpHeld {
+			p.vy += config.Gravity * (config.JumpCutGravityMul - 1.0) * dt
+		}
 	}
 
 	p.X += p.vx * dt

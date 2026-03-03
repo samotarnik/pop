@@ -66,11 +66,12 @@ func (l *LevelScene) Update(g *game.Game) error {
 	dt := 1.0 / config.TPS
 
 	in := entity.Input{
-		Left:   ebiten.IsKeyPressed(ebiten.KeyArrowLeft) || ebiten.IsKeyPressed(ebiten.KeyJ),
-		Right:  ebiten.IsKeyPressed(ebiten.KeyArrowRight) || ebiten.IsKeyPressed(ebiten.KeyL),
-		Jump:   inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) || inpututil.IsKeyJustPressed(ebiten.KeyI),
-		Duck:   ebiten.IsKeyPressed(ebiten.KeyArrowDown) || ebiten.IsKeyPressed(ebiten.KeyK),
-		Attack: inpututil.IsKeyJustPressed(ebiten.KeySpace),
+		Left:     ebiten.IsKeyPressed(ebiten.KeyArrowLeft) || ebiten.IsKeyPressed(ebiten.KeyJ),
+		Right:    ebiten.IsKeyPressed(ebiten.KeyArrowRight) || ebiten.IsKeyPressed(ebiten.KeyL),
+		Jump:     inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) || inpututil.IsKeyJustPressed(ebiten.KeyI),
+		JumpHeld: ebiten.IsKeyPressed(ebiten.KeyArrowUp) || ebiten.IsKeyPressed(ebiten.KeyI),
+		Duck:     ebiten.IsKeyPressed(ebiten.KeyArrowDown) || ebiten.IsKeyPressed(ebiten.KeyK),
+		Attack:   inpututil.IsKeyJustPressed(ebiten.KeySpace),
 	}
 
 	l.player.Update(dt, in, data.GroundY)

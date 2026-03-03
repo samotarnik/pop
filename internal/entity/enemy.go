@@ -99,21 +99,36 @@ func (e *Enemy) AttackRect() physics.Rect {
 
 func (e *Enemy) moveSpeed() float64 {
 	if e.Kind == "boss" {
-		return config.BossMoveSpeed
+		return config.BossMoveSpeed + config.BossMoveStep*e.pressureFactor()
 	}
 	return config.FarmerMoveSpeed
 }
 
 func (e *Enemy) attackCooldown() float64 {
 	if e.Kind == "boss" {
-		return config.BossAttackCooldownSec
+		cd := config.BossAttackCooldownSec - config.BossCooldownStepSec*e.pressureFactor()
+		if cd < config.BossMinCooldownSec {
+			return config.BossMinCooldownSec
+		}
+		return cd
 	}
 	return config.FarmerAttackCooldownSec
 }
 
 func (e *Enemy) attackReach() float64 {
 	if e.Kind == "boss" {
-		return config.BossAttackReach
+		return config.BossAttackReach + config.BossReachStep*e.pressureFactor()
 	}
 	return config.FarmerAttackReach
+}
+
+func (e *Enemy) pressureFactor() float64 {
+	if e.MaxHealth <= 1 {
+		return 0
+	}
+	missing := e.MaxHealth - e.Health
+	if missing < 0 {
+		missing = 0
+	}
+	return float64(missing) / float64(e.MaxHealth-1)
 }
