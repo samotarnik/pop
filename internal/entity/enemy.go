@@ -12,9 +12,10 @@ type Enemy struct {
 	W float64
 	H float64
 
-	Kind   string
-	Health int
-	Facing int
+	Kind      string
+	Health    int
+	MaxHealth int
+	Facing    int
 
 	attackCD float64
 }
@@ -27,13 +28,14 @@ func NewEnemy(x, groundY float64, kind string, health int) *Enemy {
 		w = 42
 	}
 	return &Enemy{
-		X:      x,
-		Y:      groundY - h,
-		W:      w,
-		H:      h,
-		Kind:   kind,
-		Health: health,
-		Facing: -1,
+		X:         x,
+		Y:         groundY - h,
+		W:         w,
+		H:         h,
+		Kind:      kind,
+		Health:    health,
+		MaxHealth: health,
+		Facing:    -1,
 	}
 }
 
@@ -56,13 +58,14 @@ func (e *Enemy) Update(dt, playerX float64) {
 		e.Facing = 1
 	}
 
-	if math.Abs(dist) <= config.EnemyAttackRange {
+	reach := e.attackReach()
+	if math.Abs(dist) <= reach {
 		return
 	}
 
-	speed := 70.0
-	if e.Kind == "boss" {
-		speed = 90.0
+	speed := e.moveSpeed()
+	if math.Abs(dist) <= reach*config.EnemyNearSlowdownRadius {
+		speed *= config.EnemyNearSlowdownFactor
 	}
 	if dist < 0 {
 		e.X -= speed * dt
@@ -79,11 +82,7 @@ func (e *Enemy) CanAttack(playerRect physics.Rect) bool {
 }
 
 func (e *Enemy) RegisterAttack() {
-	cd := 0.9
-	if e.Kind == "boss" {
-		cd = 0.6
-	}
-	e.attackCD = cd
+	e.attackCD = e.attackCooldown()
 }
 
 func (e *Enemy) Rect() physics.Rect {
@@ -91,8 +90,30 @@ func (e *Enemy) Rect() physics.Rect {
 }
 
 func (e *Enemy) AttackRect() physics.Rect {
+	reach := e.attackReach() * 0.52
 	if e.Facing >= 0 {
-		return physics.Rect{X: e.X + e.W, Y: e.Y + 12, W: 20, H: e.H - 16}
+		return physics.Rect{X: e.X + e.W, Y: e.Y + 12, W: reach, H: e.H - 16}
 	}
-	return physics.Rect{X: e.X - 20, Y: e.Y + 12, W: 20, H: e.H - 16}
+	return physics.Rect{X: e.X - reach, Y: e.Y + 12, W: reach, H: e.H - 16}
+}
+
+func (e *Enemy) moveSpeed() float64 {
+	if e.Kind == "boss" {
+		return config.BossMoveSpeed
+	}
+	return config.FarmerMoveSpeed
+}
+
+func (e *Enemy) attackCooldown() float64 {
+	if e.Kind == "boss" {
+		return config.BossAttackCooldownSec
+	}
+	return config.FarmerAttackCooldownSec
+}
+
+func (e *Enemy) attackReach() float64 {
+	if e.Kind == "boss" {
+		return config.BossAttackReach
+	}
+	return config.FarmerAttackReach
 }

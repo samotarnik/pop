@@ -5,21 +5,24 @@
   "height": 480,
   "ground_y": 420,
   "player_spawn_x": 80,
-  "goal_x": 2700,
+  "goal_x": 2720,
   "next_story_id": "interlude_2",
   "bgm": "bgm_8bit",
   "enemies": [
-    {"x": 1100, "kind": "farmer", "health": 1},
-    {"x": 1900, "kind": "farmer", "health": 1}
+    {"x": 960, "kind": "farmer", "health": 1},
+    {"x": 1580, "kind": "farmer", "health": 1},
+    {"x": 2360, "kind": "farmer", "health": 1}
   ],
   "hazards": [
-    {"type": "cat", "x": 750, "y": 386, "speed": 0},
-    {"type": "cat", "x": 2200, "y": 386, "speed": 0},
-    {"type": "hay_bale", "x": 1600, "y": 338, "speed": 90}
+    {"type": "cat", "x": 700, "y": 386, "speed": 0},
+    {"type": "hay_bale", "x": 1260, "y": 338, "speed": 85},
+    {"type": "cat", "x": 1880, "y": 386, "speed": 0},
+    {"type": "hay_bale", "x": 2440, "y": 332, "speed": -95}
   ],
   "pickups": [
     {"type": "beer", "x": 520, "y": 376},
-    {"type": "beer", "x": 1320, "y": 376},
-    {"type": "beer", "x": 2420, "y": 376}
+    {"type": "beer", "x": 1380, "y": 376},
+    {"type": "beer", "x": 2140, "y": 376},
+    {"type": "beer", "x": 2680, "y": 376}
   ]
 }

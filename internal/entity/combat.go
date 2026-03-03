@@ -14,6 +14,9 @@ func ResolveStab(player *Player, enemies []*Enemy) bool {
 		}
 		if physics.Intersects(atkRect, e.Rect()) {
 			e.Health--
+			if e.Health < 0 {
+				e.Health = 0
+			}
 			player.RegisterAttackHit()
 			return true
 		}

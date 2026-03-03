@@ -1,24 +1,29 @@
 {
   "id": "level3",
   "name": "Boss Field",
-  "width": 3000,
+  "width": 3200,
   "height": 480,
   "ground_y": 420,
   "player_spawn_x": 80,
-  "goal_x": 2920,
+  "goal_x": 3140,
   "next_story_id": "outro",
   "bgm": "bgm_8bit",
   "enemies": [
-    {"x": 2800, "kind": "boss", "health": 3}
+    {"x": 1280, "kind": "farmer", "health": 1},
+    {"x": 2120, "kind": "farmer", "health": 1},
+    {"x": 2920, "kind": "boss", "health": 3}
   ],
   "hazards": [
-    {"type": "cat", "x": 980, "y": 386, "speed": 0},
-    {"type": "hay_bale", "x": 1600, "y": 346, "speed": -95},
-    {"type": "hay_bale", "x": 2200, "y": 332, "speed": 110}
+    {"type": "cat", "x": 920, "y": 386, "speed": 0},
+    {"type": "hay_bale", "x": 1480, "y": 346, "speed": -100},
+    {"type": "cat", "x": 1900, "y": 386, "speed": 0},
+    {"type": "hay_bale", "x": 2360, "y": 332, "speed": 120},
+    {"type": "hay_bale", "x": 2720, "y": 352, "speed": -80}
   ],
   "pickups": [
     {"type": "beer", "x": 680, "y": 376},
-    {"type": "beer", "x": 1460, "y": 376},
-    {"type": "beer", "x": 2500, "y": 376}
+    {"type": "beer", "x": 1340, "y": 376},
+    {"type": "beer", "x": 1880, "y": 376},
+    {"type": "beer", "x": 2520, "y": 376}
   ]
 }

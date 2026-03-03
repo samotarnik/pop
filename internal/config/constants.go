@@ -25,6 +25,19 @@ const (
 )
 
 const (
-	EnemyAttackRange  = 40.0
 	EnemyAttackDamage = 1
+)
+
+const (
+	FarmerMoveSpeed = 76.0
+	BossMoveSpeed   = 106.0
+
+	FarmerAttackCooldownSec = 1.05
+	BossAttackCooldownSec   = 0.58
+
+	FarmerAttackReach = 38.0
+	BossAttackReach   = 52.0
+
+	EnemyNearSlowdownFactor = 0.58
+	EnemyNearSlowdownRadius = 1.7
 )
