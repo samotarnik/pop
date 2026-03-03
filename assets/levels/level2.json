@@ -1,0 +1,25 @@
+{
+  "id": "level2",
+  "name": "Windy Field",
+  "width": 2800,
+  "height": 480,
+  "ground_y": 420,
+  "player_spawn_x": 80,
+  "goal_x": 2700,
+  "next_story_id": "interlude_2",
+  "bgm": "bgm_8bit",
+  "enemies": [
+    {"x": 1100, "kind": "farmer", "health": 1},
+    {"x": 1900, "kind": "farmer", "health": 1}
+  ],
+  "hazards": [
+    {"type": "cat", "x": 750, "y": 386, "speed": 0},
+    {"type": "cat", "x": 2200, "y": 386, "speed": 0},
+    {"type": "hay_bale", "x": 1600, "y": 338, "speed": 90}
+  ],
+  "pickups": [
+    {"type": "beer", "x": 520, "y": 376},
+    {"type": "beer", "x": 1320, "y": 376},
+    {"type": "beer", "x": 2420, "y": 376}
+  ]
+}

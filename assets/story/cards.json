@@ -1,0 +1,18 @@
+{
+  "intro": {
+    "title": "Prince of Prekmurje",
+    "body": "The fields are restless. Cats lurk, hay bales fly, and rival farmers block your way.\nTake your pitchfork and cross all three fields."
+  },
+  "interlude_1": {
+    "title": "A Narrow Escape",
+    "body": "You crossed the first field, but the wind grows stronger.\nKeep your stance steady and your pitchfork ready."
+  },
+  "interlude_2": {
+    "title": "Final Field",
+    "body": "Only one field remains. The toughest farmer waits at the end.\nOutlast him and the harvest is yours."
+  },
+  "outro": {
+    "title": "Victory",
+    "body": "The final farmer falls and peace returns to Prekmurje.\nYour beer cans are safe for another season."
+  }
+}

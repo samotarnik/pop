@@ -1,0 +1,23 @@
+{
+  "id": "level1",
+  "name": "First Field",
+  "width": 2400,
+  "height": 480,
+  "ground_y": 420,
+  "player_spawn_x": 80,
+  "goal_x": 2300,
+  "next_story_id": "interlude_1",
+  "bgm": "bgm_8bit",
+  "enemies": [
+    {"x": 900, "kind": "farmer", "health": 1},
+    {"x": 1700, "kind": "farmer", "health": 1}
+  ],
+  "hazards": [
+    {"type": "cat", "x": 600, "y": 386, "speed": 0},
+    {"type": "hay_bale", "x": 1300, "y": 352, "speed": -70}
+  ],
+  "pickups": [
+    {"type": "beer", "x": 450, "y": 376},
+    {"type": "beer", "x": 1500, "y": 376}
+  ]
+}
