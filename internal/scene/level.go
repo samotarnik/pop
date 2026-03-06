@@ -25,7 +25,10 @@ type LevelScene struct {
 	hazards []*entity.Hazard
 	pickups []*entity.Pickup
 
-	cameraX float64
+	cameraX         float64
+	dead            bool
+	gameOverPending bool
+	deathMessage    string
 }
 
 func NewLevelScene(levelIndex int) *LevelScene {
@@ -53,12 +56,31 @@ func (l *LevelScene) setup(g *game.Game) {
 	for _, p := range data.Pickups {
 		l.pickups = append(l.pickups, entity.NewPickup(p.Type, p.X, p.Y))
 	}
+	l.dead = false
+	l.gameOverPending = false
+	l.deathMessage = ""
 	g.State.CurrentLevel = l.levelIndex
 }
 
 func (l *LevelScene) Update(g *game.Game) error {
 	if l.player == nil {
 		l.setup(g)
+	}
+	if l.dead {
+		dt := 1.0 / config.TPS
+		if l.anim != nil {
+			l.anim.SetClip("dead")
+			l.anim.Update(dt)
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyR) {
+			if l.gameOverPending {
+				g.SetScene(NewGameOverScene())
+				return nil
+			}
+			g.State.Respawn()
+			l.setup(g)
+		}
+		return nil
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		g.SetScene(NewPauseScene(l))
@@ -114,7 +136,7 @@ func (l *LevelScene) Update(g *game.Game) error {
 			dead := g.State.Damage(config.EnemyAttackDamage)
 			l.player.RegisterHit()
 			if dead {
-				l.handleDeath(g)
+				l.beginDeath(g, "The rival farmer got you.")
 				return nil
 			}
 		}
@@ -127,14 +149,14 @@ func (l *LevelScene) Update(g *game.Game) error {
 		switch h.Type {
 		case "cat":
 			g.State.Kill()
-			l.handleDeath(g)
+			l.beginDeath(g, "A cat knocked you out.")
 			return nil
 		case "hay_bale":
 			if l.player.CanBeHit() {
 				dead := g.State.Damage(1)
 				l.player.RegisterHit()
 				if dead {
-					l.handleDeath(g)
+					l.beginDeath(g, "A hay bale took you down.")
 					return nil
 				}
 			}
@@ -173,13 +195,16 @@ func (l *LevelScene) Update(g *game.Game) error {
 	return nil
 }
 
-func (l *LevelScene) handleDeath(g *game.Game) {
-	if g.State.LoseLife() {
-		g.SetScene(NewGameOverScene())
+func (l *LevelScene) beginDeath(g *game.Game, message string) {
+	if l.dead {
 		return
 	}
-	g.State.Respawn()
-	l.setup(g)
+	l.dead = true
+	l.deathMessage = message
+	l.gameOverPending = g.State.LoseLife()
+	if l.anim != nil {
+		l.anim.SetClip("dead")
+	}
 }
 
 func (l *LevelScene) handleLevelComplete(g *game.Game) {
@@ -263,6 +288,9 @@ func (l *LevelScene) Draw(g *game.Game, screen *ebiten.Image) {
 		ebitenutil.DrawRect(screen, l.player.X-l.cameraX, l.player.Y, l.player.W, l.player.H, pc)
 	}
 	l.drawHUD(g, screen, data)
+	if l.dead {
+		l.drawDeathOverlay(g, screen)
+	}
 }
 
 func (l *LevelScene) drawBackground(screen *ebiten.Image, data *level.LevelData) {
@@ -328,6 +356,20 @@ func (l *LevelScene) drawHUD(g *game.Game, screen *ebiten.Image, data *level.Lev
 		audioStatus = "MUTED"
 	}
 	ebitenutil.DebugPrintAt(screen, audioStatus, 564, 8)
+}
+
+func (l *LevelScene) drawDeathOverlay(g *game.Game, screen *ebiten.Image) {
+	ebitenutil.DrawRect(screen, 0, 0, float64(config.InternalWidth), float64(config.InternalHeight), color.RGBA{A: 160})
+	msg := l.deathMessage
+	if msg == "" {
+		msg = "Prince died."
+	}
+	if l.gameOverPending {
+		msg = fmt.Sprintf("%s\nNo lives left.\nPress R to continue to Game Over.", msg)
+	} else {
+		msg = fmt.Sprintf("%s\nLives left: %d\nPress R to restart this level.", msg, g.State.Lives)
+	}
+	ebitenutil.DebugPrintAt(screen, msg, config.InternalWidth/2-130, config.InternalHeight/2-24)
 }
 
 func onScreen(x, w float64) bool {
