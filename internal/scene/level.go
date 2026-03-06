@@ -322,32 +322,12 @@ func (l *LevelScene) drawHUD(g *game.Game, screen *ebiten.Image, data *level.Lev
 		ebitenutil.DrawRect(screen, x, 34, 12, 12, c)
 	}
 	ebitenutil.DebugPrintAt(screen, "Lives", 142, 22)
-	ebitenutil.DebugPrintAt(screen, fmt.Sprintf("Enemies %d", l.aliveEnemies()), 220, 30)
-
-	progress := clamp01((l.player.X + l.player.W) / data.GoalX)
-	barX := 332.0
-	barY := 33.0
-	barW := 280.0
-	barH := 14.0
-	ebitenutil.DrawRect(screen, barX, barY, barW, barH, color.RGBA{R: 0x3d, G: 0x43, B: 0x3d, A: 0xff})
-	ebitenutil.DrawRect(screen, barX+1, barY+1, (barW-2)*progress, barH-2, color.RGBA{R: 0xa6, G: 0xd9, B: 0x75, A: 0xff})
-	ebitenutil.DebugPrintAt(screen, fmt.Sprintf("Progress %d%%", int(progress*100)), 332, 20)
 
 	audioStatus := "BGM ON"
 	if g.State.Muted {
 		audioStatus = "MUTED"
 	}
 	ebitenutil.DebugPrintAt(screen, audioStatus, 564, 8)
-}
-
-func (l *LevelScene) aliveEnemies() int {
-	count := 0
-	for _, e := range l.enemies {
-		if e.Alive() {
-			count++
-		}
-	}
-	return count
 }
 
 func onScreen(x, w float64) bool {
