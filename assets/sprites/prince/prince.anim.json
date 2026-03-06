@@ -1,0 +1,119 @@
+{
+  "image": "prince.png",
+  "frameSize": {
+    "w": 96,
+    "h": 96
+  },
+  "anchor": {
+    "x": 48,
+    "y": 88
+  },
+  "animations": {
+    "attack": {
+      "frames": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "fps": 14,
+      "loop": false,
+      "events": {
+        "hit_off": 5,
+        "hit_on": 3
+      }
+    },
+    "dead": {
+      "frames": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "duck": {
+      "frames": [
+        23,
+        24
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "hit": {
+      "frames": [
+        33,
+        34,
+        35
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "idle": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "jump_fall": {
+      "frames": [
+        19,
+        20
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "jump_start": {
+      "frames": [
+        14,
+        15,
+        16
+      ],
+      "fps": 14,
+      "loop": false
+    },
+    "jump_up": {
+      "frames": [
+        17,
+        18
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "land": {
+      "frames": [
+        21,
+        22
+      ],
+      "fps": 14,
+      "loop": false
+    },
+    "run": {
+      "frames": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "fps": 12,
+      "loop": true
+    }
+  }
+}

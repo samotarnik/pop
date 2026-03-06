@@ -6,6 +6,7 @@ import (
 	"pop/internal/audio"
 	"pop/internal/config"
 	"pop/internal/level"
+	"pop/internal/sprite"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -21,15 +22,17 @@ type Game struct {
 	Levels []*level.LevelData
 	Cards  map[string]level.StoryCard
 	Audio  *audio.Manager
+	Prince *sprite.Sheet
 	scene  Scene
 }
 
-func New(levels []*level.LevelData, cards map[string]level.StoryCard) *Game {
+func New(levels []*level.LevelData, cards map[string]level.StoryCard, prince *sprite.Sheet) *Game {
 	return &Game{
 		State:  NewState(),
 		Levels: levels,
 		Cards:  cards,
 		Audio:  audio.NewManager(),
+		Prince: prince,
 	}
 }
 

@@ -9,6 +9,7 @@ import (
 	"pop/internal/game"
 	"pop/internal/level"
 	"pop/internal/physics"
+	"pop/internal/sprite"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -19,6 +20,7 @@ type LevelScene struct {
 	levelIndex int
 
 	player  *entity.Player
+	anim    *sprite.Animator
 	enemies []*entity.Enemy
 	hazards []*entity.Hazard
 	pickups []*entity.Pickup
@@ -34,6 +36,11 @@ func (l *LevelScene) setup(g *game.Game) {
 	data := g.Levels[l.levelIndex]
 	g.Audio.PlayBGM(data.BGM)
 	l.player = entity.NewPlayer(data.PlayerSpawn, data.GroundY)
+	if g.Prince != nil {
+		l.anim = sprite.NewAnimator(g.Prince, "idle")
+	} else {
+		l.anim = nil
+	}
 	l.enemies = make([]*entity.Enemy, 0, len(data.Enemies))
 	for _, e := range data.Enemies {
 		l.enemies = append(l.enemies, entity.NewEnemy(e.X, data.GroundY, e.Kind, e.Health))
@@ -75,6 +82,10 @@ func (l *LevelScene) Update(g *game.Game) error {
 	}
 
 	l.player.Update(dt, in, data.GroundY)
+	if l.anim != nil {
+		l.anim.SetClip(l.player.AnimationClip())
+		l.anim.Update(dt)
+	}
 	if l.player.X < 0 {
 		l.player.X = 0
 	}
@@ -240,13 +251,16 @@ func (l *LevelScene) Draw(g *game.Game, screen *ebiten.Image) {
 	ebitenutil.DrawRect(screen, goalX, data.GroundY-100, 8, 100, color.RGBA{R: 0x14, G: 0x5a, B: 0x26, A: 0xff})
 	ebitenutil.DrawRect(screen, goalX+8, data.GroundY-100, 20, 12, color.RGBA{R: 0xe9, G: 0xdf, B: 0x58, A: 0xff})
 
-	pc := color.RGBA{R: 0x2f, G: 0x3f, B: 0xd1, A: 0xff}
-	if l.player.Attacking {
-		pc = color.RGBA{R: 0x1e, G: 0x2f, B: 0x8f, A: 0xff}
-	}
-	ebitenutil.DrawRect(screen, l.player.X-l.cameraX, l.player.Y, l.player.W, l.player.H, pc)
-	if atkRect, ok := l.player.AttackRect(); ok {
-		ebitenutil.DrawRect(screen, atkRect.X-l.cameraX, atkRect.Y, atkRect.W, atkRect.H, color.RGBA{R: 0xe8, G: 0xe8, B: 0xe8, A: 0xff})
+	if l.anim != nil {
+		footX := l.player.X + l.player.W/2
+		footY := l.player.Y + l.player.H
+		l.anim.Draw(screen, footX, footY, l.cameraX, l.player.Facing)
+	} else {
+		pc := color.RGBA{R: 0x2f, G: 0x3f, B: 0xd1, A: 0xff}
+		if l.player.Attacking {
+			pc = color.RGBA{R: 0x1e, G: 0x2f, B: 0x8f, A: 0xff}
+		}
+		ebitenutil.DrawRect(screen, l.player.X-l.cameraX, l.player.Y, l.player.W, l.player.H, pc)
 	}
 	l.drawHUD(g, screen, data)
 }

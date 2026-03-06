@@ -9,6 +9,7 @@ import (
 	"pop/internal/game"
 	"pop/internal/level"
 	"pop/internal/scene"
+	"pop/internal/sprite"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -22,8 +23,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	princeSheet, err := sprite.LoadSheet(assets.FS, "sprites/prince/prince.anim.json")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	g := game.New(levels, cards)
+	g := game.New(levels, cards, princeSheet)
 	g.SetScene(scene.NewMenuScene())
 
 	ebiten.SetWindowSize(config.InternalWidth*config.WindowScale, config.InternalHeight*config.WindowScale)

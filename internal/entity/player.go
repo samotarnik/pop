@@ -144,3 +144,22 @@ func (p *Player) CanBeHit() bool {
 func (p *Player) RegisterHit() {
 	p.invulnTimer = config.HitIFramesSec
 }
+
+func (p *Player) AnimationClip() string {
+	if p.Attacking {
+		return "attack"
+	}
+	if p.Ducking && p.OnGround {
+		return "duck"
+	}
+	if !p.OnGround {
+		if p.vy < 0 {
+			return "jump_up"
+		}
+		return "jump_fall"
+	}
+	if math.Abs(p.vx) > 1 {
+		return "run"
+	}
+	return "idle"
+}
